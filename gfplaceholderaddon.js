@@ -47,16 +47,24 @@
 
 			$theSelect.each(function () {
 				var elementID = this.id;
-				var inIdFormat = "#" + elementID;
+				var inIdFormat = $("#" + elementID);
 				var theLabel = $('label[for=' + elementID + ']').text();
-				console.log('The id for this field is ' + elementID + ' the label for this field is ' + theLabel);
-				$(inIdFormat).prepend("<option class='placeholder' selected disabled value=" + "'" + theLabel + "'" + ">" + theLabel + "</option>");
+				var hasDefaultSelected = false;
+
+				inIdFormat.prepend("<option class='placeholder' disabled>" + theLabel + "</option>");
+				inIdFormat.find('option').each(function() {
+					if ($(this).prop('defaultSelected')) {
+						hasDefaultSelected = true;
+					}
+				});
+
+				if (!hasDefaultSelected) {
+					inIdFormat.children('.placeholder').prop('selected', true)
+				}
 				$('label[for=' + elementID + ']').hide();
 
 			})
 		});
-
-
 	};
 
 	$(document).ready(function () {
